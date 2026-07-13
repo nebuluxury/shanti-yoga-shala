@@ -4,8 +4,40 @@
   /* ---- mobile nav ---- */
   var ham = document.getElementById('hamburger');
   var nav = document.getElementById('nav');
-  if(ham){ ham.addEventListener('click',function(){ nav.classList.toggle('open'); }); }
-  if(nav){ nav.querySelectorAll('a').forEach(function(a){ a.addEventListener('click',function(){ nav.classList.remove('open'); }); }); }
+  if(nav && ham){
+    // backdrop scrim (tap outside to close)
+    var scrim = document.createElement('div');
+    scrim.className = 'nav-scrim';
+    document.body.appendChild(scrim);
+
+    // close (X) button, wrapped in a header row (same flow pattern as .nav-extra)
+    var head = document.createElement('div');
+    head.className = 'nav-head';
+    head.innerHTML = '<button class="nav-close" aria-label="Close menu">&times;</button>';
+    nav.insertBefore(head, nav.firstChild);
+    var close = head.querySelector('.nav-close');
+
+    // CTA + contact block
+    var extra = document.createElement('div');
+    extra.className = 'nav-extra';
+    extra.innerHTML =
+      '<a href="index.html#schedule" class="btn btn-solid">Book a Class</a>' +
+      '<div class="nav-contact">' +
+        '<strong>Palm Beach Gardens</strong>' +
+        '<a href="tel:15614443280">(561) 444-3280</a>' +
+        '<a href="sms:15613732406">Text (561) 373-2406</a>' +
+      '</div>';
+    nav.appendChild(extra);
+
+    function openNav(){ nav.classList.add('open'); scrim.classList.add('show'); document.body.style.overflow='hidden'; }
+    function closeNav(){ nav.classList.remove('open'); scrim.classList.remove('show'); document.body.style.overflow=''; }
+
+    ham.addEventListener('click', openNav);
+    close.addEventListener('click', closeNav);
+    scrim.addEventListener('click', closeNav);
+    nav.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', closeNav); });
+    document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeNav(); });
+  }
 
   /* ---- hero image (loads generated art if present, else keeps gradient) ---- */
   (function(){
