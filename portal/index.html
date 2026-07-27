@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Shanti Yoga Portal</title>
+<link rel="icon" type="image/png" href="/assets/logo.png" />
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --ocean:#159bcc; --ocean-dark:#0f7ba3; --sun:#f2913f; --palm:#5fa845;
+    --ink:#163a4a; --muted:#5a7484; --line:#e3edf2; --bg:#f3f9fc; --card:#fff;
+    --shadow:0 8px 30px rgba(22,58,74,.10); --shadow-sm:0 3px 12px rgba(22,58,74,.07);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Nunito,system-ui,sans-serif;color:var(--ink);background:var(--bg)}
+  h1,h2,h3{font-family:"Baloo 2",sans-serif;margin:0}
+  a{color:var(--ocean-dark)}
+  .btn{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:12px;padding:11px 18px;
+    font-family:"Baloo 2";font-weight:700;font-size:15px;cursor:pointer;background:var(--ocean);color:#fff;transition:.15s}
+  .btn:hover{background:var(--ocean-dark)}
+  .btn.ghost{background:#fff;color:var(--ink);border:1.5px solid var(--line)}
+  .btn.ghost:hover{border-color:var(--ocean);color:var(--ocean-dark)}
+  .btn.sun{background:var(--sun)} .btn.sun:hover{filter:brightness(.95)}
+  .btn:disabled{opacity:.5;cursor:default}
+  .hide{display:none!important}
+  .pagesel{font-family:Nunito;font-weight:700;font-size:14px;padding:9px 12px;border:1.5px solid var(--line);border-radius:10px;color:var(--ink);background:#fff;cursor:pointer;max-width:220px}
+
+  /* Login */
+  #login{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+  .login-card{background:var(--card);border-radius:22px;box-shadow:var(--shadow);padding:34px 30px;max-width:380px;width:100%;text-align:center}
+  .login-card img{width:84px;height:84px;object-fit:contain;margin-bottom:8px}
+  .login-card h1{font-size:24px}
+  .login-card p{color:var(--muted);margin:6px 0 20px}
+  .field{position:relative;margin-bottom:14px}
+  .field input{width:100%;padding:13px 14px;border:1.5px solid var(--line);border-radius:12px;font-size:16px;font-family:Nunito}
+  .field input:focus{outline:none;border-color:var(--ocean)}
+  .err{color:#b3261e;font-weight:700;font-size:14px;min-height:18px;margin:2px 0 8px}
+
+  /* App shell */
+  header.bar{background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20}
+  .bar-in{max-width:1080px;margin:0 auto;padding:12px 18px;display:flex;align-items:center;gap:14px}
+  .bar-in img.logo{width:40px;height:40px;object-fit:contain}
+  .brand{font-family:"Baloo 2";font-weight:800;font-size:19px}
+  .tabs{display:flex;gap:6px;margin-left:8px}
+  .tab{border:0;background:transparent;font-family:"Baloo 2";font-weight:700;font-size:15px;color:var(--muted);
+    padding:8px 14px;border-radius:10px;cursor:pointer}
+  .tab.active{background:var(--bg);color:var(--ocean-dark)}
+  .spacer{flex:1}
+  .who{color:var(--muted);font-weight:700;font-size:14px}
+  main{max-width:1080px;margin:0 auto;padding:22px 18px 60px}
+
+  /* Dashboard */
+  .range{display:flex;gap:6px;margin-bottom:16px}
+  .range button{border:1.5px solid var(--line);background:#fff;border-radius:10px;padding:7px 13px;font-weight:700;cursor:pointer;font-family:Nunito;color:var(--muted)}
+  .range button.active{border-color:var(--ocean);color:var(--ocean-dark);background:rgba(21,155,204,.06)}
+  .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}
+  .stat{background:var(--card);border-radius:16px;box-shadow:var(--shadow-sm);padding:16px 18px}
+  .stat .lbl{color:var(--muted);font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.04em}
+  .stat .num{font-family:"Baloo 2";font-weight:800;font-size:30px;line-height:1.1;margin-top:4px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .panel{background:var(--card);border-radius:16px;box-shadow:var(--shadow-sm);padding:18px}
+  .panel h3{font-size:17px;margin-bottom:10px}
+  .row{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px dashed var(--line);font-size:15px}
+  .row:last-child{border-bottom:0}
+  .row .v{font-weight:800;color:var(--ocean-dark)}
+  .muted{color:var(--muted)}
+  .note{background:#fff7ee;border:1px solid #f6dcc0;color:#8a5a23;border-radius:12px;padding:12px 14px;font-size:14px;font-weight:600;margin-bottom:16px}
+  .lead{padding:12px 0;border-bottom:1px solid var(--line)}
+  .lead:last-child{border-bottom:0}
+  .lead .top{display:flex;justify-content:space-between;gap:10px}
+  .lead .nm{font-weight:800}
+  .lead .when{color:var(--muted);font-size:13px;white-space:nowrap}
+  .lead .msg{color:var(--ink);margin-top:3px;font-size:14px}
+  .lead .contact{color:var(--muted);font-size:13px;margin-top:2px}
+
+  /* Editor */
+  .edbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--card);border:1px solid var(--line);
+    border-radius:14px;padding:12px 14px;margin-bottom:12px;box-shadow:var(--shadow-sm)}
+  .edbar .hint{color:var(--muted);font-size:14px;font-weight:600;flex:1;min-width:200px}
+  .frame-wrap{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:var(--shadow-sm)}
+  iframe#site{width:100%;height:75vh;border:0;display:block;background:#fff}
+  .saved{color:var(--palm);font-weight:800}
+  .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;
+    padding:12px 20px;border-radius:12px;font-weight:700;box-shadow:var(--shadow);z-index:60;opacity:0;transition:.25s;pointer-events:none}
+  .toast.show{opacity:1}
+
+  @media(max-width:780px){
+    .cards{grid-template-columns:repeat(2,1fr)} .grid2{grid-template-columns:1fr}
+    .bar-in{flex-wrap:wrap} .brand{font-size:17px}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ LOGIN ============ -->
+<section id="login">
+  <form class="login-card" id="loginForm">
+    <img src="/assets/logo.png" alt="Shanti Yoga Shala" />
+    <h1>Shanti Yoga Portal</h1>
+    <p>Sign in to edit your website and events.</p>
+    <div class="field"><input id="pw" type="password" placeholder="Password" autocomplete="current-password" /></div>
+    <div class="err" id="loginErr"></div>
+    <button class="btn" type="submit" style="width:100%" id="loginBtn">Sign in</button>
+  </form>
+</section>
+
+<!-- ============ APP ============ -->
+<div id="app" class="hide">
+  <header class="bar">
+    <div class="bar-in">
+      <img class="logo" src="/assets/logo.png" alt="" />
+      <span class="brand">Shanti Portal</span>
+      <div class="tabs">
+        <button class="tab active" data-tab="dash">📊 Dashboard</button>
+        <button class="tab" data-tab="edit">✏️ Edit My Site</button>
+      </div>
+      <span class="spacer"></span>
+      <span class="who" id="who"></span>
+      <button class="btn ghost" id="logout" style="padding:7px 12px">Log out</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- DASHBOARD -->
+    <section id="dash">
+      <div class="range" id="range">
+        <button data-days="1">Today</button>
+        <button data-days="7" class="active">Last 7 days</button>
+        <button data-days="30">Last 30 days</button>
+      </div>
+      <div id="trafficNote"></div>
+      <div class="cards" id="statCards">
+        <div class="stat"><div class="lbl">Visitors</div><div class="num" id="sVisits">-</div></div>
+        <div class="stat"><div class="lbl">Page views</div><div class="num" id="sViews">-</div></div>
+        <div class="stat"><div class="lbl">New inquiries</div><div class="num" id="sLeads">-</div></div>
+        <div class="stat"><div class="lbl">Top source</div><div class="num" id="sSource" style="font-size:20px">-</div></div>
+      </div>
+      <div class="grid2">
+        <div class="panel"><h3>Where visitors come from</h3><div id="sources"><p class="muted">Loading…</p></div></div>
+        <div class="panel"><h3>Most-visited pages</h3><div id="pages"><p class="muted">Loading…</p></div></div>
+      </div>
+      <div class="panel" style="margin-top:16px"><h3>Devices</h3><div id="devices"><p class="muted">Loading…</p></div></div>
+      <div class="panel" style="margin-top:16px">
+        <h3>Recent inquiries (from your contact form)</h3>
+        <div id="leads"><p class="muted">Loading…</p></div>
+      </div>
+    </section>
+
+    <!-- EDITOR -->
+    <section id="edit" class="hide">
+      <div class="edbar">
+        <select id="pageSel" class="pagesel" title="Choose a page to edit">
+          <option value="/">Home</option>
+          <option value="/about.html">About &amp; Teachers</option>
+          <option value="/offerings.html">Offerings</option>
+          <option value="/pricing.html">Pricing</option>
+          <option value="/policies.html">Policies</option>
+        </select>
+        <span class="hint">Pick a page on the left, then click any text or photo to edit it and hit <b>Save changes</b>.</span>
+        <span id="editStatus" class="saved"></span>
+        <button class="btn ghost" id="discardBtn">Discard</button>
+        <button class="btn sun" id="resetBtn" title="Undo all saved edits and restore the original site">Reset all</button>
+        <button class="btn" id="saveBtn">💾 Save changes</button>
+      </div>
+      <div class="frame-wrap"><iframe id="site" title="Your website"></iframe></div>
+      <input type="file" id="imgInput" accept="image/*" class="hide" />
+    </section>
+  </main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const $ = (s) => document.querySelector(s);
+let CONFIG = {};
+let pendingImageId = null;
+
+function toast(msg) {
+  const t = $("#toast"); t.textContent = msg; t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 2600);
+}
+function fmt(n){ return (n||0).toLocaleString("en-US"); }
+function timeAgo(ms){
+  const s=Math.floor((Date.now()-ms)/1000);
+  if(s<60)return"just now"; const m=Math.floor(s/60); if(m<60)return m+"m ago";
+  const h=Math.floor(m/60); if(h<24)return h+"h ago"; const d=Math.floor(h/24);
+  if(d<7)return d+"d ago"; return new Date(ms).toLocaleDateString("en-US",{month:"short",day:"numeric"});
+}
+
+/* ---------- Boot ---------- */
+(async function boot(){
+  try { CONFIG = await (await fetch("/api/config")).json(); } catch(e){ CONFIG={}; }
+  let user=null;
+  try { user = (await (await fetch("/api/auth")).json()).user; } catch(e){}
+  if (user) showApp(user); else showLogin();
+})();
+
+function showLogin(){ $("#login").classList.remove("hide"); $("#app").classList.add("hide"); $("#pw").focus(); }
+function showApp(user){
+  $("#login").classList.add("hide"); $("#app").classList.remove("hide");
+  $("#who").textContent = "Hi, " + (user.name||"Denise");
+  loadDashboard(7);
+}
+
+/* ---------- Login ---------- */
+$("#loginForm").addEventListener("submit", async (e)=>{
+  e.preventDefault();
+  const btn=$("#loginBtn"); const err=$("#loginErr"); err.textContent="";
+  btn.disabled=true; btn.textContent="Signing in…";
+  try{
+    const r = await fetch("/api/auth",{method:"POST",headers:{"content-type":"application/json"},
+      body:JSON.stringify({password:$("#pw").value})});
+    const d = await r.json();
+    if(r.ok && d.user){ showApp(d.user); }
+    else { err.textContent = d.error==="wrong_password" ? "That password isn't right." :
+           d.error==="not_configured" ? "Portal isn't finished setting up yet." : "Couldn't sign in. Try again."; }
+  }catch(_){ err.textContent="Network error. Try again."; }
+  btn.disabled=false; btn.textContent="Sign in";
+});
+$("#logout").addEventListener("click", async ()=>{
+  await fetch("/api/auth",{method:"DELETE"}); location.reload();
+});
+
+/* ---------- Tabs ---------- */
+document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>{
+  document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
+  t.classList.add("active");
+  const tab=t.dataset.tab;
+  $("#dash").classList.toggle("hide", tab!=="dash");
+  $("#edit").classList.toggle("hide", tab!=="edit");
+  if(tab==="edit") openEditor();
+}));
+
+/* ---------- Dashboard ---------- */
+let curDays=7;
+$("#range").addEventListener("click",(e)=>{
+  const b=e.target.closest("button[data-days]"); if(!b)return;
+  document.querySelectorAll("#range button").forEach(x=>x.classList.remove("active"));
+  b.classList.add("active"); loadDashboard(parseInt(b.dataset.days,10));
+});
+
+async function loadDashboard(days){
+  curDays=days;
+  // Leads always available (KV)
+  loadLeads();
+  const note=$("#trafficNote");
+  if(!CONFIG.analyticsReady){
+    note.innerHTML='<div class="note">📈 Traffic tracking is being switched on. Visitor numbers will start showing here within a day of setup. Your inquiries below are already live.</div>';
+    ["sVisits","sViews","sSource"].forEach(id=>$("#"+id).textContent="—");
+    $("#sources").innerHTML='<p class="muted">Available once tracking is on.</p>';
+    $("#pages").innerHTML='<p class="muted">Available once tracking is on.</p>';
+    $("#devices").innerHTML='<p class="muted">Available once tracking is on.</p>';
+    return;
+  }
+  note.innerHTML="";
+  try{
+    const d = await (await fetch("/api/analytics?days="+days)).json();
+    $("#sVisits").textContent=fmt(d.visits);
+    $("#sViews").textContent=fmt(d.pageviews);
+    $("#sSource").textContent=(d.topSources&&d.topSources[0]?d.topSources[0].source:"—");
+    renderRows("#sources", (d.topSources||[]).map(s=>[s.source,fmt(s.visits)]), "No visits yet.");
+    renderRows("#pages", (d.topPages||[]).map(p=>[p.path,fmt(p.views)]), "No views yet.");
+    renderRows("#devices", (d.devices||[]).map(x=>[x.device,fmt(x.views)]), "No data yet.");
+  }catch(_){
+    note.innerHTML='<div class="note">Couldn’t load traffic right now.</div>';
+  }
+}
+function renderRows(sel, pairs, empty){
+  const el=$(sel);
+  if(!pairs.length){ el.innerHTML='<p class="muted">'+empty+'</p>'; return; }
+  el.innerHTML = pairs.map(([k,v])=>'<div class="row"><span>'+escapeHtml(k)+'</span><span class="v">'+v+'</span></div>').join("");
+}
+async function loadLeads(){
+  try{
+    const d = await (await fetch("/api/inquiries")).json();
+    const list=d.inquiries||[];
+    const since = Date.now()-curDays*86400000;
+    $("#sLeads").textContent = fmt(list.filter(x=>x.at>=since).length);
+    const el=$("#leads");
+    if(!list.length){ el.innerHTML='<p class="muted">No inquiries yet. They’ll appear here the moment someone uses your contact form.</p>'; return; }
+    el.innerHTML = list.slice(0,25).map(l=>(
+      '<div class="lead"><div class="top"><span class="nm">'+escapeHtml(l.name||"Someone")+'</span>'+
+      '<span class="when">'+timeAgo(l.at)+'</span></div>'+
+      (l.message?'<div class="msg">'+escapeHtml(l.message)+'</div>':'')+
+      '<div class="contact">'+escapeHtml([l.email,l.phone].filter(Boolean).join(" · "))+'</div></div>'
+    )).join("");
+  }catch(_){ $("#leads").innerHTML='<p class="muted">Couldn’t load inquiries.</p>'; }
+}
+function escapeHtml(s){ return String(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+
+/* ---------- Editor ---------- */
+let editorLoaded=false;
+function loadPage(path){ $("#site").src = path + (path.indexOf("?")>-1?"&":"?") + "ts=" + Date.now(); }
+function openEditor(){
+  const f=$("#site");
+  if(!editorLoaded){
+    f.addEventListener("load", ()=>{ try{ f.contentWindow.postMessage({type:"fpt-edit-on"}, location.origin); }catch(e){} });
+    loadPage($("#pageSel").value || "/");
+    editorLoaded=true;
+  }
+}
+document.addEventListener("change",(e)=>{ if(e.target && e.target.id==="pageSel"){ loadPage(e.target.value); $("#editStatus").textContent=""; toast("Loaded "+e.target.options[e.target.selectedIndex].text+" - save before switching pages"); }});
+window.addEventListener("message",(e)=>{
+  if(e.origin!==location.origin) return;
+  const d=e.data||{};
+  if(d.type==="fpt-edit-ready"){ $("#editStatus").textContent="Ready to edit"; setTimeout(()=>$("#editStatus").textContent="",1500); }
+  if(d.type==="fpt-edit-image"){ pendingImageId=d.id; $("#imgInput").click(); }
+  if(d.type==="fpt-edit-changes"){ commitChanges(d.changes); }
+});
+
+$("#imgInput").addEventListener("change", async (e)=>{
+  const file=e.target.files[0]; e.target.value="";
+  if(!file || !pendingImageId) return;
+  toast("Uploading photo…");
+  const fd=new FormData(); fd.append("file",file);
+  try{
+    const r=await fetch("/api/upload",{method:"POST",body:fd});
+    const d=await r.json();
+    if(r.ok && d.url){
+      $("#site").contentWindow.postMessage({type:"fpt-set-image",id:pendingImageId,url:d.url}, location.origin);
+      toast("Photo added - remember to Save");
+    } else { toast("Upload failed: "+(d.error||"")); }
+  }catch(_){ toast("Upload failed"); }
+  pendingImageId=null;
+});
+
+$("#saveBtn").addEventListener("click", ()=>{
+  $("#saveBtn").disabled=true; $("#editStatus").textContent="Saving…";
+  $("#site").contentWindow.postMessage({type:"fpt-edit-collect"}, location.origin);
+});
+async function commitChanges(changes){
+  try{
+    const cur = (await (await fetch("/api/content")).json()).overrides || {};
+    const merged = Object.assign({}, cur, changes);
+    const r = await fetch("/api/content",{method:"PUT",headers:{"content-type":"application/json"},
+      body:JSON.stringify({overrides:merged})});
+    if(r.ok){ $("#editStatus").textContent="✓ Saved & live"; toast("Saved! Your site is updated."); }
+    else { const e=await r.json(); $("#editStatus").textContent=""; toast("Save failed: "+(e.error||"")); }
+  }catch(_){ toast("Save failed"); $("#editStatus").textContent=""; }
+  $("#saveBtn").disabled=false;
+  setTimeout(()=>$("#editStatus").textContent="",2500);
+}
+$("#discardBtn").addEventListener("click", ()=>{
+  editorLoaded=false; $("#site").src="about:blank"; openEditor(); toast("Discarded unsaved changes");
+});
+$("#resetBtn").addEventListener("click", async ()=>{
+  if(!confirm("Undo ALL edits and restore the original website? This can't be undone.")) return;
+  const r=await fetch("/api/content",{method:"PUT",headers:{"content-type":"application/json"},body:JSON.stringify({overrides:{}})});
+  if(r.ok){ toast("Restored original site"); editorLoaded=false; $("#site").src="about:blank"; openEditor(); }
+  else toast("Reset failed");
+});
+</script>
+</body>
+</html>
