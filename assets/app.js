@@ -86,6 +86,7 @@
 
   var daysEl = document.getElementById('schedDays');
   var listEl = document.getElementById('schedList');
+  if(!daysEl || !listEl) return; // live MindBody widget is embedded instead of the demo grid
   if(!daysEl || !listEl) return;
 
   function renderList(i){
